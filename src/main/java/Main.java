@@ -5,6 +5,31 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
+	static int attack (int goblinHealth){
+	
+		Random random = new Random();
+
+		int playerStrength = 3;
+		int playerDamage = playerStrength * random.nextInt(4, 8);
+		int playerCritRoll = random.nextInt(1, 11);
+
+
+		if (playerCritRoll == 3){
+			System.out.println("Critical HIT!! x2 Damage");
+			playerDamage *= 2;
+		}
+
+
+		System.out.println("You attacked the goblin");
+		goblinHealth =Math.max(0, goblinHealth - playerDamage) ;
+		System.out.println("You Damaged the Goblin for: "+playerDamage+" HP\n"+"Goblin health: "+goblinHealth);
+	
+		return goblinHealth;
+	}  
+
+
+
+
 	public static void main(String[] args){
 		Scanner scanner = new Scanner(System.in);
 		Random random = new Random();
@@ -14,13 +39,12 @@ public class Main {
 		int strength = 3;
 		int armor = 3;
 		int playerHealth = 100;
-		int goblinHealth = 70;
-		int playerDamage = 0; 
 		int choice = 0;
 		int healingPotion = 3;
 		int goblinDamage = 0;
 		int damageTaken =0 ;
 		int crit = 0;
+		int goblinHealth = 70;
 
 		System.out.println("A Goblin just came to you, what to do?");		
 
@@ -32,16 +56,11 @@ public class Main {
 			choice = scanner.nextInt();			
 
 			// 1 in a 10 chance to get crit
-			crit = random.nextInt(1, 11);
 			
 			//Calculate Random damage (12 - 21 )
 			goblinDamage = strength * random.nextInt(4, 8);
-			playerDamage = strength * random.nextInt(4, 8);
 			// reset Block
 			playerBlock = 0;
-
-			if (crit == 3)
-				playerDamage *=2;
 
 			if (crit == 2)
 				goblinDamage *=2;
@@ -50,17 +69,9 @@ public class Main {
 			damageTaken = Math.max(0, goblinDamage - playerBlock);
 
 
-			if (choice == 1) {
+			if (choice == 1) 
+				goblinHealth = attack(goblinHealth);
 
-				if (crit == 3)
-					System.out.println("Critical HIT!! x2 Damage");
-
-				System.out.println("You attacked the goblin");
-				goblinHealth =Math.max(0, goblinHealth - playerDamage) ;
-				System.out.println("You Damaged the Goblin for: "+playerDamage+" HP\n"+"Goblin health: "+goblinHealth);
-
-
-			}
 			else if (choice == 2) {
 
 				System.out.println("You chose to Block");

@@ -1,5 +1,5 @@
 //day = 4
-//hours = 10.5
+//hours = 11
 import java.util.Random;
 import java.util.Scanner;
 
@@ -84,8 +84,8 @@ public class Main {
 
 	static int heal (int health){
 
-		health =Math.min(100, health+15);
-		System.out.println("You Heal for 15 HP.\nYour Health is: "+health+" HP ");
+		health =Math.min(100, health+35);
+		System.out.println("You Heal for 35 HP.\nYour Health is: "+health+" HP ");
 		return health;
 
 	}
@@ -129,7 +129,7 @@ public class Main {
 		int enemyHealth = 70;
 		int enemyStrength = 3;
 		String enemyName = "Goblin";
-		System.out.println("A Goblin just came to you, what to do?");		
+		System.out.println("A Goblin just came to you, what to do? ( "+enemyHealth+" HP, 12-21 DMG )");		
 		int[] result = fight(playerHealth, playerStrength, playerArmor, healingPotions, enemyName, enemyStrength, enemyHealth, scanner);
 		playerHealth = result[0];
 		healingPotions = result [1];
@@ -149,16 +149,20 @@ public class Main {
 				playerStrength += 2;
 			}
 
-			System.out.println("A Skeleton is here!!! What to do?");
 			//Change enemy to skeleton 
-			enemyHealth=90;
-			enemyStrength = 4;
+			enemyHealth=80;
+			enemyStrength = 3;
 			enemyName = "Skeleton";
+			System.out.println("A Skeleton just came to you, what to do? ( "+enemyHealth+" HP, 12-21 DMG )");		
+			
 			result = fight(playerHealth, playerStrength, playerArmor, healingPotions, enemyName, enemyStrength, enemyHealth, scanner);
 			playerHealth = result[0];
 			healingPotions = result [1]; 
 		}
-	
+		if (playerHealth > 0) 
+			System.out.println("Congrats won You the run of this easy game :)");
+			
+		
 		scanner.close();
 	}
 

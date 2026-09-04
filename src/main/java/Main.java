@@ -1,11 +1,10 @@
 //day = 4
-//hours = 9
-//TODO: Add enemy rewards, Bring Healing Potions Back.
+//hours = 10
+//TODO: Bring Healing Potions Back.
 import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
-
 
 	public static int fight (int pHealth, int pStrength,int pArmor , String eName, int eStrength, int eHealth, Scanner scanner  ){
 
@@ -54,11 +53,9 @@ public class Main {
 				System.out.println("Be Careful, "+eName+ " is still standing!!");
 
 			if (pHealth == 0) 
-
 				System.out.println("You Died, Try Again.");	
 
 		}
-		eHealth = 90;
 		return pHealth;
 	}
 
@@ -113,21 +110,35 @@ public class Main {
 	}  
 
 	public static void main(String[] args){
-
+		
+		Random random = new Random();
 		Scanner scanner = new Scanner(System.in);
 		//player 
 		int playerArmor = 4;
 		int playerHealth = 100;
 		int playerStrength = 3;
-		//enemy
 		int enemyHealth = 70;
 		int enemyStrength = 3;
 		String enemyName = "Goblin";
 		System.out.println("A Goblin just came to you, what to do?");		
 
 		playerHealth = fight(playerHealth, playerStrength, playerArmor, enemyName, enemyStrength, enemyHealth, scanner);
-
+		
 		if(playerHealth > 0){
+			System.out.println("the "+enemyName+"dropped something!!!!");
+			int reward = random.nextInt(1, 4); 
+
+			if (reward == 1 ) {
+				System.out.println("+25HP !!!!");
+				playerHealth +=25;	
+			} else if(reward == 2){
+				System.out.println("+2 Armor !!");
+				playerArmor += 2;
+			} else if(reward == 3){
+				System.out.println("+2 Strength !!");
+				playerStrength += 2;
+			}
+
 			System.out.println("A Skeleton is here!!! What to do?");
 			//Change enemy to skeleton 
 			enemyHealth=90;

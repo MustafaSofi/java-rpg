@@ -1,10 +1,66 @@
-//day = 3
-//hours = 8
-
+//day = 4
+//hours = 9
+//TODO: Add enemy rewards, Bring Healing Potions Back.
 import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
+
+
+	public static int fight (int pHealth, int pStrength,int pArmor , String eName, int eStrength, int eHealth, Scanner scanner  ){
+
+		int choice;
+		int pBlock = 0;
+
+		while (pHealth > 0 && eHealth > 0) {
+			System.out.print("1. Attack\n2. Block\n3. Heal \nEnter a Number: ");
+
+			while (!scanner.hasNextInt()) {
+				System.out.print("Please enter a valid number: ");
+				scanner.next();
+
+			}
+			choice = scanner.nextInt();
+
+			// reset Block 
+			pBlock  = 0;
+
+			if (choice == 1) 
+				eHealth = attack(eHealth, pStrength, eName);
+
+			else if (choice == 2) {
+				pBlock = block(pArmor);
+			}
+
+			else if (choice == 3) {
+				System.out.println("You chose to heal");
+				if (pHealth>= 100){
+					System.out.println("But your health is already full");
+					continue;
+				}else
+					pHealth = heal(pHealth);
+			}
+			else{
+				System.out.println("Please enter a number from 1 to 3");
+				continue;
+			}	
+
+			if (eHealth > 0) 
+				pHealth = enemyTurn(pHealth, pBlock, eName, eStrength);
+
+			if (eHealth == 0)
+				System.out.println(eName+" is Dead :)");
+			else
+				System.out.println("Be Careful, "+eName+ " is still standing!!");
+
+			if (pHealth == 0) 
+
+				System.out.println("You Died, Try Again.");	
+
+		}
+		eHealth = 90;
+		return pHealth;
+	}
 
 	static int enemyTurn(int playerHP, int block, String enemy, int strength){
 
@@ -25,7 +81,7 @@ public class Main {
 	static int heal (int health){
 
 		health =Math.min(100, health+15);
-		System.out.println("You Heal for 15 HP.\n-1 Healing Potion.\nYour Health is: "+health+" HP ");
+		System.out.println("You Heal for 15 HP.\nYour Health is: "+health+" HP ");
 		return health;
 
 	}
@@ -37,12 +93,11 @@ public class Main {
 		return playerBlock;
 	}
 
-	static int attack (int enemyHealth, String enemy){
+	static int attack (int enemyHealth, int pStrength, String enemy){
 
 		Random random = new Random();
 
-		int playerStrength = 3;
-		int playerDamage = playerStrength * random.nextInt(4, 8);
+		int playerDamage = pStrength * random.nextInt(4, 8);
 		int playerCritRoll = random.nextInt(1, 11);
 
 		if (playerCritRoll == 3){
@@ -58,147 +113,30 @@ public class Main {
 	}  
 
 	public static void main(String[] args){
+
 		Scanner scanner = new Scanner(System.in);
-
 		//player 
-		int playerBlock = 0;
-		int armor = 4;
+		int playerArmor = 4;
 		int playerHealth = 100;
-		int choice = 0;
-		int healingPotion = 3;
-
+		int playerStrength = 3;
 		//enemy
 		int enemyHealth = 70;
 		int enemyStrength = 3;
 		String enemyName = "Goblin";
 		System.out.println("A Goblin just came to you, what to do?");		
 
-		while (playerHealth > 0 && enemyHealth > 0) {
-			System.out.print("1. Attack\n2. Block\n3. Heal \nEnter a Number: ");
+		playerHealth = fight(playerHealth, playerStrength, playerArmor, enemyName, enemyStrength, enemyHealth, scanner);
 
-			while (!scanner.hasNextInt()) {
-				System.out.print("Please enter a valid number: ");
-				scanner.next();
-
-			}
-
-			choice = scanner.nextInt();
-			//Calculate Random damage (12 - 21 )
-			// reset Block
-			playerBlock = 0;
-
-			if (choice == 1) 
-				enemyHealth = attack(enemyHealth, enemyName);
-
-			else if (choice == 2) {
-				playerBlock = block(armor);
-			}
-
-			else if (choice == 3) {
-				System.out.println("You chose to heal");
-				if (playerHealth>= 100){
-					System.out.println("But your health is already full");
-					continue;
-				}
-				else if (healingPotion <= 0){ 
-					System.out.println("But you have no healing potions left");
-					continue;
-				}else{
-					healingPotion--;
-					playerHealth = heal(playerHealth);
-					System.out.println("You have "+healingPotion+" Healing Potions left");
-
-				}
-
-			}
-
-			else{
-
-				System.out.println("Please enter a number from 1 to 3");
-				continue;
-
-			}	
-
-			if (enemyHealth > 0) 
-				playerHealth = enemyTurn(playerHealth, playerBlock, enemyName, enemyStrength);
-
-			if (enemyHealth == 0)
-				System.out.println(enemyName+" is Dead :)");
-			else
-				System.out.println("Be Careful, "+enemyName+ " is still standing!!");
-
-			if (playerHealth == 0) 
-
-				System.out.println("You Died, Try Again.");	
-
-		}
-
-		//Change enemy to skeleton 
-		enemyHealth = 90;
-		enemyStrength = 4;
-		enemyName = "Skeleton";
-
-		if(playerHealth !=0){
+		if(playerHealth > 0){
 			System.out.println("A Skeleton is here!!! What to do?");
-
-			while (playerHealth > 0 && enemyHealth > 0) {
-				System.out.print("1. Attack\n2. Block\n3. Heal \nEnter a Number: ");
-
-				while (!scanner.hasNextInt()) {
-					System.out.print("Please enter a valid number: ");
-					scanner.next();
-				}
-
-				choice = scanner.nextInt();
-				//Calculate Random damage (12 - 21 )
-				// reset Block
-				playerBlock = 0;
-
-				if (choice == 1) 
-					enemyHealth = attack(enemyHealth, enemyName);
-
-				else if (choice == 2) 
-					playerBlock = block(armor);
-			
-
-				else if (choice == 3) {
-					System.out.println("You chose to heal");
-					if (playerHealth>= 100){
-						System.out.println("But your health is already full");
-						continue;
-					}
-					else if (healingPotion <= 0){ 
-						System.out.println("But you have no healing potions left");
-						continue;
-					}else{
-						healingPotion--;
-						playerHealth = heal(playerHealth);
-						System.out.println("You have "+healingPotion+" Healing Potions left");
-
-					}
-
-				}
-
-				else{
-					System.out.println("Please enter a number from 1 to 3");
-					continue;
-				}	
-
-				if (enemyHealth > 0) 
-					playerHealth = enemyTurn(playerHealth, playerBlock, enemyName, enemyStrength);
-
-				if (enemyHealth == 0)
-					System.out.println(enemyName+" is Dead :)");
-				else
-					System.out.println("Be Careful, "+enemyName+ " is still standing!!");
-
-				if (playerHealth == 0) 
-					System.out.println("You Died, Try Again.");	
-
-			}
-
+			//Change enemy to skeleton 
+			enemyHealth=90;
+			enemyStrength = 4;
+			enemyName = "Skeleton";
+			playerHealth = fight(playerHealth, playerStrength, playerArmor, enemyName, enemyStrength, enemyHealth, scanner);
 		}
 
+		scanner.close();
 	}
 
 }

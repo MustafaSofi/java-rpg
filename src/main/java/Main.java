@@ -1,12 +1,11 @@
 //day = 4
-//hours = 10
-//TODO: Bring Healing Potions Back.
+//hours = 10.5
 import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
 
-	public static int fight (int pHealth, int pStrength,int pArmor , String eName, int eStrength, int eHealth, Scanner scanner  ){
+	public static int[] fight (int pHealth, int pStrength,int pArmor, int potions, String eName, int eStrength, int eHealth, Scanner scanner  ){
 
 		int choice;
 		int pBlock = 0;
@@ -36,8 +35,16 @@ public class Main {
 				if (pHealth>= 100){
 					System.out.println("But your health is already full");
 					continue;
-				}else
+				}
+				else if (potions <= 0) {
+					System.out.println("You have no Healing Potions left");
+					continue;
+				}
+				else{ 
 					pHealth = heal(pHealth);
+					potions--;
+					System.out.println("You have "+potions+" Healing Potions left");
+				}
 			}
 			else{
 				System.out.println("Please enter a number from 1 to 3");
@@ -56,7 +63,7 @@ public class Main {
 				System.out.println("You Died, Try Again.");	
 
 		}
-		return pHealth;
+		return new int[] {pHealth, potions};
 	}
 
 	static int enemyTurn(int playerHP, int block, String enemy, int strength){
@@ -117,20 +124,23 @@ public class Main {
 		int playerArmor = 4;
 		int playerHealth = 100;
 		int playerStrength = 3;
+		int healingPotions = 3;
+		//Enemy
 		int enemyHealth = 70;
 		int enemyStrength = 3;
 		String enemyName = "Goblin";
 		System.out.println("A Goblin just came to you, what to do?");		
-
-		playerHealth = fight(playerHealth, playerStrength, playerArmor, enemyName, enemyStrength, enemyHealth, scanner);
+		int[] result = fight(playerHealth, playerStrength, playerArmor, healingPotions, enemyName, enemyStrength, enemyHealth, scanner);
+		playerHealth = result[0];
+		healingPotions = result [1];
 		
 		if(playerHealth > 0){
-			System.out.println("the "+enemyName+"dropped something!!!!");
+			System.out.println("the "+enemyName+" dropped something!!!!");
 			int reward = random.nextInt(1, 4); 
 
 			if (reward == 1 ) {
 				System.out.println("+25HP !!!!");
-				playerHealth +=25;	
+				playerHealth =Math.min(100, playerHealth + 25);	
 			} else if(reward == 2){
 				System.out.println("+2 Armor !!");
 				playerArmor += 2;
@@ -144,9 +154,11 @@ public class Main {
 			enemyHealth=90;
 			enemyStrength = 4;
 			enemyName = "Skeleton";
-			playerHealth = fight(playerHealth, playerStrength, playerArmor, enemyName, enemyStrength, enemyHealth, scanner);
+			result = fight(playerHealth, playerStrength, playerArmor, healingPotions, enemyName, enemyStrength, enemyHealth, scanner);
+			playerHealth = result[0];
+			healingPotions = result [1]; 
 		}
-
+	
 		scanner.close();
 	}
 

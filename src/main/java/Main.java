@@ -1,5 +1,5 @@
-//day = 4
-//hours = 11
+//day = 5
+//hours = 11.5
 import java.util.Random;
 import java.util.Scanner;
 
@@ -54,13 +54,16 @@ public class Main {
 			if (eHealth > 0) 
 				pHealth = enemyTurn(pHealth, pBlock, eName, eStrength);
 
+			if (pHealth == 0){ 
+				System.out.println("You Died, Try Again.");
+				break;
+			}
 			if (eHealth == 0)
 				System.out.println(eName+" is Dead :)");
 			else
 				System.out.println("Be Careful, "+eName+ " is still standing!!");
 
-			if (pHealth == 0) 
-				System.out.println("You Died, Try Again.");	
+
 
 		}
 		return new int[] {pHealth, potions};
@@ -117,7 +120,7 @@ public class Main {
 	}  
 
 	public static void main(String[] args){
-		
+
 		Random random = new Random();
 		Scanner scanner = new Scanner(System.in);
 		//player 
@@ -125,44 +128,50 @@ public class Main {
 		int playerHealth = 100;
 		int playerStrength = 3;
 		int healingPotions = 3;
+		int[] result;
 		//Enemy
-		int enemyHealth = 70;
-		int enemyStrength = 3;
-		String enemyName = "Goblin";
-		System.out.println("A Goblin just came to you, what to do? ( "+enemyHealth+" HP, 12-21 DMG )");		
-		int[] result = fight(playerHealth, playerStrength, playerArmor, healingPotions, enemyName, enemyStrength, enemyHealth, scanner);
-		playerHealth = result[0];
-		healingPotions = result [1];
-		
-		if(playerHealth > 0){
-			System.out.println("the "+enemyName+" dropped something!!!!");
-			int reward = random.nextInt(1, 4); 
+		int[] enemyHealth = {70, 80, 110,};
+		int[] enemyStrength = {3, 3, 4};
+		String[] enemyNames = {"Goblin", "Skeleton", "Orc" };
 
-			if (reward == 1 ) {
-				System.out.println("+25HP !!!!");
-				playerHealth =Math.min(100, playerHealth + 25);	
-			} else if(reward == 2){
-				System.out.println("+2 Armor !!");
-				playerArmor += 2;
-			} else if(reward == 3){
-				System.out.println("+2 Strength !!");
-				playerStrength += 2;
+		for ( int i = 0 ; i < enemyNames.length ; i++ ){
+
+
+			System.out.println("A "+enemyNames[i]+" just came to you, what to do? ( "+enemyHealth[i]+" HP - "+enemyStrength[i]+" Strength )");		
+
+
+			result = fight(playerHealth, playerStrength, playerArmor, healingPotions, enemyNames[i], enemyStrength[i], enemyHealth[i], scanner);
+			playerHealth = result[0];
+			healingPotions = result[1];
+
+			if (playerHealth <= 0)
+				break;
+
+			if(playerHealth > 0){
+
+
+
+				System.out.println("the "+enemyNames[i]+" dropped something!!!!");
+				int reward = random.nextInt(1, 4); 
+
+				if (reward == 1 ) {
+					System.out.println("+25HP !!!!");
+					playerHealth =Math.min(100, playerHealth + 25);	
+				} else if(reward == 2){
+					System.out.println("+2 Armor !!");
+					playerArmor += 2;
+				} else if(reward == 3){
+					System.out.println("+2 Strength !!");
+					playerStrength += 2;
+				}
+
 			}
 
-			//Change enemy to skeleton 
-			enemyHealth=80;
-			enemyStrength = 3;
-			enemyName = "Skeleton";
-			System.out.println("A Skeleton just came to you, what to do? ( "+enemyHealth+" HP, 12-21 DMG )");		
-			
-			result = fight(playerHealth, playerStrength, playerArmor, healingPotions, enemyName, enemyStrength, enemyHealth, scanner);
-			playerHealth = result[0];
-			healingPotions = result [1]; 
 		}
 		if (playerHealth > 0) 
-			System.out.println("Congrats won You the run of this easy game :)");
-			
-		
+			System.out.println("Congrats! You won the run of this easy game :)");
+
+
 		scanner.close();
 	}
 

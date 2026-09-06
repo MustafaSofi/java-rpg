@@ -1,7 +1,9 @@
-//day = 5
-//hours = 11.5
+//day = 6
+//hours = 12
+//TODO: Add light and heavy attack
 import java.util.Random;
 import java.util.Scanner;
+
 
 public class Main {
 
@@ -22,35 +24,36 @@ public class Main {
 
 			// reset Block 
 			pBlock  = 0;
-
-			if (choice == 1) 
-				eHealth = attack(eHealth, pStrength, eName);
-
-			else if (choice == 2) {
-				pBlock = block(pArmor);
-			}
-
-			else if (choice == 3) {
-				System.out.println("You chose to heal");
-				if (pHealth>= 100){
-					System.out.println("But your health is already full");
+			
+			switch (choice){
+				case 1:
+					eHealth = attack(eHealth, pStrength, eName);
+					break;
+				case 2:
+					pBlock = block(pArmor);
+					break;
+				case 3:
+					System.out.println("You chose to heal");
+					if (pHealth >= 100) {
+						System.out.println("But your health is full");
+						continue;
+					}
+					else if (potions <= 0) {
+						System.out.println("You Dont have any Healing Potions left");
+						continue;
+					}
+					else {
+						pHealth = heal(pHealth);
+						potions--;
+						System.out.println("You have "+potions+" Healing Potions left");
+					}
+					break;
+					
+				default:
+					System.out.println("Please Enter a number from 1 to 3");
 					continue;
-				}
-				else if (potions <= 0) {
-					System.out.println("You have no Healing Potions left");
-					continue;
-				}
-				else{ 
-					pHealth = heal(pHealth);
-					potions--;
-					System.out.println("You have "+potions+" Healing Potions left");
-				}
-			}
-			else{
-				System.out.println("Please enter a number from 1 to 3");
-				continue;
+
 			}	
-
 			if (eHealth > 0) 
 				pHealth = enemyTurn(pHealth, pBlock, eName, eStrength);
 
@@ -147,24 +150,18 @@ public class Main {
 			if (playerHealth <= 0)
 				break;
 
-			if(playerHealth > 0){
+			System.out.println("the "+enemyNames[i]+" dropped something!!!!");
+			int rewardRoll = random.nextInt(1, 4); 
 
-
-
-				System.out.println("the "+enemyNames[i]+" dropped something!!!!");
-				int reward = random.nextInt(1, 4); 
-
-				if (reward == 1 ) {
-					System.out.println("+25HP !!!!");
-					playerHealth =Math.min(100, playerHealth + 25);	
-				} else if(reward == 2){
-					System.out.println("+2 Armor !!");
-					playerArmor += 2;
-				} else if(reward == 3){
-					System.out.println("+2 Strength !!");
-					playerStrength += 2;
-				}
-
+			if (rewardRoll == 1 ) {
+				System.out.println("+25HP !!!!");
+				playerHealth =Math.min(100, playerHealth + 25);	
+			} else if(rewardRoll == 2){
+				System.out.println("+2 Armor !!");
+				playerArmor += 2;
+			} else if(rewardRoll == 3){
+				System.out.println("+2 Strength !!");
+				playerStrength += 2;
 			}
 
 		}

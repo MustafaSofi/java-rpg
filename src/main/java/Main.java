@@ -1,15 +1,56 @@
 //day = 6
-//hours = 12
-//TODO: Add light and heavy attack
+//hours = 12.5
 import java.util.Random;
 import java.util.Scanner;
 
 
 public class Main {
+	static int lightAttack (int enemyHealth, int pStrength, String enemy){
 
+		Random random = new Random();
+		int playerDamage = pStrength * random.nextInt(3, 7);
+		int playerCritRoll = random.nextInt(1, 6);
+
+		if (playerCritRoll == 3){
+			System.out.println("Critical HIT!! x2 Damage");
+			playerDamage *= 2;
+		}
+
+		System.out.println("You Light Attacked the "+enemy);
+		enemyHealth =Math.max(0, enemyHealth - playerDamage) ;
+		System.out.println("You Damaged the "+enemy+" for: "+playerDamage+" HP\n"+enemy+" health: "+enemyHealth);
+
+		return enemyHealth;
+	} 
+
+	static int heavyAttack (int enemyHealth, int pStrength, String enemy){
+
+		Random random = new Random();
+		int missChance = random.nextInt(1, 5);
+		int playerDamage = pStrength * random.nextInt(6, 11);
+		int playerCritRoll = random.nextInt(1, 11);
+
+		if (missChance == 1){
+			System.out.println("You Missed ");
+			return enemyHealth;
+
+		}
+
+		if (playerCritRoll == 3){
+			System.out.println("Critical HIT!! x2 Damage");
+			playerDamage *= 2;
+		}
+
+		System.out.println("You Heavy Attacked the "+enemy);
+		enemyHealth =Math.max(0, enemyHealth - playerDamage) ;
+		System.out.println("You Damaged the "+enemy+" for: "+playerDamage+" HP\n"+enemy+" health: "+enemyHealth);
+
+		return enemyHealth;
+	} 
 	public static int[] fight (int pHealth, int pStrength,int pArmor, int potions, String eName, int eStrength, int eHealth, Scanner scanner  ){
 
 		int choice;
+		int attackChoice;
 		int pBlock = 0;
 
 		while (pHealth > 0 && eHealth > 0) {
@@ -24,10 +65,29 @@ public class Main {
 
 			// reset Block 
 			pBlock  = 0;
-			
+
 			switch (choice){
 				case 1:
-					eHealth = attack(eHealth, pStrength, eName);
+					System.out.print("1. Light Attack - lower but guaranteed damage\n2. Heavy Attack - high damage but have 25% miss chance\nChoose one: ");
+					while (!scanner.hasNextInt()) {
+						System.out.print("Please enter a valid number: ");
+						scanner.next();
+
+					}
+					attackChoice = scanner.nextInt();
+					switch (attackChoice) {
+						case 1:
+							eHealth = lightAttack(eHealth, pStrength, eName);
+							break;
+						case 2:
+							eHealth = heavyAttack(eHealth, pStrength, eName);
+							break;
+
+
+						default:
+							System.out.println("Please enter 1 or 2");
+							continue;
+					}
 					break;
 				case 2:
 					pBlock = block(pArmor);
@@ -48,7 +108,7 @@ public class Main {
 						System.out.println("You have "+potions+" Healing Potions left");
 					}
 					break;
-					
+
 				default:
 					System.out.println("Please Enter a number from 1 to 3");
 					continue;
@@ -102,25 +162,6 @@ public class Main {
 		System.out.println("You Blocked "+playerBlock+" hitpoints");
 		return playerBlock;
 	}
-
-	static int attack (int enemyHealth, int pStrength, String enemy){
-
-		Random random = new Random();
-
-		int playerDamage = pStrength * random.nextInt(4, 8);
-		int playerCritRoll = random.nextInt(1, 11);
-
-		if (playerCritRoll == 3){
-			System.out.println("Critical HIT!! x2 Damage");
-			playerDamage *= 2;
-		}
-
-		System.out.println("You attacked the "+enemy);
-		enemyHealth =Math.max(0, enemyHealth - playerDamage) ;
-		System.out.println("You Damaged the "+enemy+" for: "+playerDamage+" HP\n"+enemy+" health: "+enemyHealth);
-
-		return enemyHealth;
-	}  
 
 	public static void main(String[] args){
 

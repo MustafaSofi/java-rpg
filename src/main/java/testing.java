@@ -1,16 +1,27 @@
+class Player {
+	String name;
+	int health; 
+	int strength;
+	int armor;
+}
+
 public class testing {
 
 	public static void main(String[] args){
+		Player warrior = new Player();	
+	
+		warrior.name = "Warrior";
+		warrior.health = 150;
+		warrior.strength = 2;
+		warrior.armor = 6;
 
-		String[] names = {"Goblin", "Skeleton", "Orc"};
-		int[] health = {70, 80, 110,};
-		int[] strength = {3, 3, 4};	
+		Player player = new Player();
+		player.name = "Player";
+		player.health = 100;
+		player.armor = 3;
+		player.strength = 3;
 
-
-		for (int i = 0 ; i < names.length  ; i++ ){
-			System.out.println(names[i]+" - "+health[i]+" HP - "+strength[i]+" Strength");
-
-		}
-
+		System.out.println(player.name+"\nHealth "+player.health+"\nStrength "+player.strength+"\nArmor "+player.armor);
+		System.out.println(warrior.name+"\nHealth "+warrior.health+"\nStrength "+warrior.strength+"\nArmor "+warrior.armor);
 	}
 }

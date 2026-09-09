@@ -1,10 +1,22 @@
-//day = 6
-//hours = 12.5
+//day = 7
+//hours = 12.75
 import java.util.Random;
 import java.util.Scanner;
 
 
 public class Main {
+	
+	static int getNumber (Scanner scanner){
+		while (!scanner.hasNextInt()){
+			System.out.print("Please enter a valid number: ");
+			scanner.next();
+
+		}
+	int number = scanner.nextInt();
+
+	return number;
+	}
+
 	static int lightAttack (int enemyHealth, int pStrength, String enemy){
 
 		Random random = new Random();
@@ -56,12 +68,7 @@ public class Main {
 		while (pHealth > 0 && eHealth > 0) {
 			System.out.print("1. Attack\n2. Block\n3. Heal \nEnter a Number: ");
 
-			while (!scanner.hasNextInt()) {
-				System.out.print("Please enter a valid number: ");
-				scanner.next();
-
-			}
-			choice = scanner.nextInt();
+			choice = getNumber(scanner); 
 
 			// reset Block 
 			pBlock  = 0;
@@ -69,12 +76,9 @@ public class Main {
 			switch (choice){
 				case 1:
 					System.out.print("1. Light Attack - lower but guaranteed damage\n2. Heavy Attack - high damage but have 25% miss chance\nChoose one: ");
-					while (!scanner.hasNextInt()) {
-						System.out.print("Please enter a valid number: ");
-						scanner.next();
-
-					}
-					attackChoice = scanner.nextInt();
+					
+					attackChoice = getNumber(scanner);
+					
 					switch (attackChoice) {
 						case 1:
 							eHealth = lightAttack(eHealth, pStrength, eName);
@@ -82,7 +86,6 @@ public class Main {
 						case 2:
 							eHealth = heavyAttack(eHealth, pStrength, eName);
 							break;
-
 
 						default:
 							System.out.println("Please enter a valid number");
